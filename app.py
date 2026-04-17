@@ -102,6 +102,7 @@ st.markdown("""
         border-radius: 8px !important;
         text-decoration: none !important;
         transition: 0.3s;
+        font-family: 'Trebuchet MS', 'Segoe UI', sans-serif !important;
     }
     
     div.stButton > button:hover {
