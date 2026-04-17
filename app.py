@@ -67,7 +67,7 @@ st.markdown("""
         background-color: #018DA6 !important;
         color: white !important;
         border: none !important;
-        font-weight: bold !important;
+        font-weight: bolder !important;
         padding: 15px !important;
         width: 100% !important;
         border-radius: 8px !important;
@@ -93,7 +93,7 @@ st.markdown("""
         <div style="background-color: #018DA6; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: bold;">IA CORPORATIVA</div>
     </div>
     <h3 style="color: #018DA6; font-size: 18px;">📊 Gerador de Relatórios Estratégicos</h3>
-    <p style="color: #555; font-size: 14px; margin-bottom: 20px;">Faça o upload do Excel exportado para iniciar a redação técnica.</p>
+    <p style="color: #555; font-size: 14px; margin-bottom: 20px;">Faça o upload do Excel exportado para gerar o relatório.</p>
     """, unsafe_allow_html=True)
 
 # --- WIDGETS NATIVOS (Agora ficarão naturalmente dentro do card branco) ---
