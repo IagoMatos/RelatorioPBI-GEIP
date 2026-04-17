@@ -145,7 +145,7 @@ api_key = st.secrets.get("GEMINI_API_KEY") or st.text_input("Gemini API Key", ty
 arquivo = st.file_uploader("", type="xlsx", label_visibility="collapsed")
 
 if arquivo and api_key:
-    if st.button("🚀 INICIAR ANÁLISE DE DADOS"):
+    if st.button(" INICIAR ANÁLISE DE DADOS"):
         try:
             with st.spinner("A IA está a analisar o dashboard..."):
                 df = pd.read_excel(arquivo)
