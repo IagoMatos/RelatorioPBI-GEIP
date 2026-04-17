@@ -45,7 +45,7 @@ def criar_pdf_buffer(texto):
     return buffer
 
 # Interface do Usuário
-st.title("📊 Gerador de Relatórios Estratégicos")
+
 st.markdown("""
     <style>
 
@@ -72,8 +72,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Tenta pegar a chave automaticamente dos segredos do Streamlit
-# Se não achar, pede para o usuário (fallback)
+st.title("📊 Gerador de Relatórios Estratégicos")
+
 api_key = st.secrets.get("GEMINI_API_KEY") or st.sidebar.text_input("Gemini API Key", type="password")
 
 arquivo = st.file_uploader("Upload do Excel (Power BI)", type="xlsx")
