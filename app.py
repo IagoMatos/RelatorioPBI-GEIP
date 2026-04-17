@@ -135,4 +135,8 @@ st.markdown("""
         <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
         <p style="color: #666; font-size: 14px; font-weight: bold;">“Transformando dados em decisões estratégicas para a infraestrutura.”</p>
         <a href="https://fhemigmg.sharepoint.com/sites/GEIP" target="_blank" 
-           style="background-color: #018DA6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block; margin-top:
+           style="background-color: #018DA6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block; margin-top: 10px;">
+           Acessar Portal GEIP
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
