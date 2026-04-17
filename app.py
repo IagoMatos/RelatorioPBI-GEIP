@@ -55,15 +55,15 @@ st.markdown("""
     
     .stButton>button {
         border-radius: 20px;
-        background-color: #018DA6;
+        background-color: #279eb3;
         color: white;
         font-weight: bold;
         transition: 0.3s;
     }
     
     .stButton>button:hover {
-        background-color: #003366;
-        border-color: #003366;
+        background-color: #018DA6;
+        border-color: #018DA6;
     }
     </style>
     """, unsafe_allow_html=True)
