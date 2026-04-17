@@ -8,9 +8,9 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
-st.set_page_config(page_title="Analista IA - GEIP", page_icon="🏢", layout="wide")
+# Usamos 'centered' para o card não esticar muito em telas grandes
+st.set_page_config(page_title="Analista IA - GEIP", page_icon="🏢", layout="centered")
 
-# (Mantenha sua função criar_pdf_buffer aqui igual ao que já temos)
 def criar_pdf_buffer(texto):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4)
@@ -34,44 +34,35 @@ def criar_pdf_buffer(texto):
     buffer.seek(0)
     return buffer
 
-# --- CSS TOTALMENTE REVISADO (UNIFICAÇÃO DE BLOCOS) ---
+# --- CSS NATIVO STREAMLIT ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap');
     
+    /* Fundo Azul Escuro da GEIP para toda a tela */
     .stApp {
         background-color: #023440;
         font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
     }
 
-    /* Remove espaços inúteis do topo */
-    .block-container { padding-top: 2rem; }
-
-    /* CARD ÚNICO (Branco) */
-    .unified-card {
+    /* Transforma o container central do Streamlit no nosso Card Branco */
+    [data-testid="block-container"] {
         background-color: #ffffff;
         border-radius: 12px;
+        padding: 40px 50px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        max-width: 850px;
-        margin: 0 auto;
-        padding: 0;
-        overflow: hidden;
+        margin-top: 40px;
+        margin-bottom: 40px;
     }
 
-    .header-geip {
-        padding: 30px 40px;
+    /* Linha divisória do cabeçalho */
+    .header-divider {
         border-bottom: 5px solid #018DA6;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
     }
 
-    /* Container para os componentes do Streamlit dentro do card */
-    .st-box {
-        padding: 20px 40px 40px 40px;
-    }
-
-    /* Customização do botão para seguir o padrão GEIP */
+    /* Botões Padrão GEIP */
     div.stButton > button {
         background-color: #018DA6 !important;
         color: white !important;
@@ -80,55 +71,48 @@ st.markdown("""
         padding: 15px !important;
         width: 100% !important;
         border-radius: 8px !important;
+        transition: 0.3s;
     }
     
     div.stButton > button:hover {
         background-color: #279eb3 !important;
     }
 
-    .highlight-blue {
-        color: #bff9ff;
-        text-align: center;
-        font-weight: bold;
-        margin-top: 30px;
-    }
+    /* Ocultar a barra superior chata do Streamlit */
+    header {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 
-# --- CONSTRUÇÃO DO LAYOUT ---
-# Abrimos a estrutura do card no topo
+# --- CABEÇALHO DENTRO DO CARD ---
 st.markdown("""
-    <div class="unified-card">
-        <div class="header-geip">
-            <div>
-                <h2 style="margin:0; color: #018DA6; font-size: 24px;">SISTEMA DE ANÁLISE GEIP</h2>
-                <p style="margin:0; color: #666; font-size: 14px;">Gestão de Infraestrutura e Projetos - FHEMIG</p>
-            </div>
-            <div style="background-color: #018DA6; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: bold;">IA CORPORATIVA</div>
+    <div class="header-divider" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 style="margin:0; color: #018DA6; font-size: 26px;">SISTEMA DE ANÁLISE GEIP</h2>
+            <p style="margin:0; color: #666; font-size: 14px;">Gestão de Infraestrutura e Projetos - FHEMIG</p>
         </div>
-        <div class="st-box">
-            <h3 style="color: #018DA6; font-size: 18px; margin-bottom: 5px;">📊 Gerador de Relatórios Estratégicos</h3>
-            <p style="color: #555; font-size: 14px; margin-bottom: 25px;">Faça o upload do Excel exportado para iniciar a redação técnica.</p>
-""", unsafe_allow_html=True)
+        <div style="background-color: #018DA6; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: bold;">IA CORPORATIVA</div>
+    </div>
+    <h3 style="color: #018DA6; font-size: 18px;">📊 Gerador de Relatórios Estratégicos</h3>
+    <p style="color: #555; font-size: 14px; margin-bottom: 20px;">Faça o upload do Excel exportado para iniciar a redação técnica.</p>
+    """, unsafe_allow_html=True)
 
-# Componentes Streamlit (Eles vão aparecer "dentro" do padding da st-box devido ao layout)
-api_key = st.secrets.get("GEMINI_API_KEY") or st.sidebar.text_input("Gemini API Key", type="password")
+# --- WIDGETS NATIVOS (Agora ficarão naturalmente dentro do card branco) ---
+api_key = st.secrets.get("GEMINI_API_KEY") or st.text_input("Gemini API Key", type="password")
 arquivo = st.file_uploader("", type="xlsx", label_visibility="collapsed")
 
 if arquivo and api_key:
     if st.button("🚀 INICIAR ANÁLISE DE DADOS"):
         try:
             with st.spinner("A IA está analisando o dashboard..."):
-                # Lógica Real da IA
                 df = pd.read_excel(arquivo)
                 dados_csv = df.to_csv(index=False)
                 
                 client = genai.Client(api_key=api_key)
                 prompt = f"Atue como Analista Sênior da GEIP. Analise os dados e gere um relatório detalhado sem introduções. Dados: {dados_csv}"
                 
-                resposta = client.models.generate_content(model="gemini-2.0-flash-lite", contents=prompt)
+                # Voltando para o modelo principal que funcionou para a sua chave
+                resposta = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
                 
-                # Gera o PDF
                 pdf_output = criar_pdf_buffer(resposta.text)
                 
                 st.success("Relatório concluído com sucesso!")
@@ -139,18 +123,16 @@ if arquivo and api_key:
                     mime="application/pdf"
                 )
         except Exception as e:
-            st.error(f"Erro no processamento: {e}")
+            # Tratamento de erro limpo sem vazar código no app
+            if "429" in str(e):
+                st.error("⚠️ O limite de análises da sua chave foi atingido. Tente novamente mais tarde.")
+            else:
+                st.error("⚠️ Ocorreu um erro ao processar os dados. Verifique sua chave de API ou a formatação da planilha.")
 
-# Fechamos as divs do card
-st.markdown("</div></div>", unsafe_allow_html=True)
-
-# Rodapé fora do card
+# --- RODAPÉ ---
 st.markdown("""
-    <div style="text-align: center; margin-top: 30px;">
-        <p class="highlight-blue">“Transformando dados em decisões estratégicas para a infraestrutura.”</p>
+    <div style="text-align: center; margin-top: 40px;">
+        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
+        <p style="color: #666; font-size: 14px; font-weight: bold;">“Transformando dados em decisões estratégicas para a infraestrutura.”</p>
         <a href="https://fhemigmg.sharepoint.com/sites/GEIP" target="_blank" 
-           style="background-color: #018DA6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block; margin-top: 15px;">
-           Acessar Portal GEIP
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
+           style="background-color: #018DA6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block; margin-top:
