@@ -96,11 +96,9 @@ st.markdown("""
         color: white !important;
         border: none !important;
         font-weight: bold !important;
-        font-size: 14px !important;
-        padding: 10px 20px !important;
+        padding: 15px !important;
         width: 100% !important;
         border-radius: 8px !important;
-        text-decoration: none !important;
         transition: 0.3s;
         font-family: 'Trebuchet MS', 'Segoe UI', sans-serif !important;
     }
