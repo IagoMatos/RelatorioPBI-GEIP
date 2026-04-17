@@ -38,7 +38,7 @@ def criar_pdf_buffer(texto):
     
     story.append(Spacer(1, 30))
     story.append(HRFlowable(width="100%", thickness=1, color="lightgrey"))
-    story.append(Paragraph("Este relatório foi gerado por IA e não substitui a análise humana.", styles["Disclaimer"]))
+    story.append(Paragraph("Este relatório foi gerado por Inteligência Artificial e não substitui a análise humana.", styles["Disclaimer"]))
 
     doc.build(story)
     buffer.seek(0)
@@ -64,7 +64,7 @@ if arquivo and api_key:
                 client = genai.Client(api_key=api_key)
                 prompt = f"Atue como Analista Sênior. Gere um relatório longo e detalhado sem introduções. Dados: {dados_completos}"
                 
-                resposta = client.models.generate_content(model="gemini-1.5-flash", contents=prompt)
+                resposta = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
                 pdf_output = criar_pdf_buffer(resposta.text)
                 
                 st.success("Relatório Concluído!")
