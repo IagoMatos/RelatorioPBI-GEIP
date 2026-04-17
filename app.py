@@ -141,7 +141,7 @@ cabecalho_html = f"""
 st.markdown(cabecalho_html, unsafe_allow_html=True)
 
 # --- WIDGETS NATIVOS ---
-api_key = st.secrets.get("GEMINI_API_KEY") or st.text_input("Gemini API Key", type="password")
+api_key = st.text_input("🔑 Insira a Nova Chave API aqui:", type="password")
 arquivo = st.file_uploader("", type="xlsx", label_visibility="collapsed")
 
 if arquivo and api_key:
@@ -178,7 +178,7 @@ if arquivo and api_key:
                 BASE DE DADOS PARA ANÁLISE:
                 {dados_csv}"""
                 
-                resposta = client.models.generate_content(model="gemini-1.5-flash", contents=prompt)
+                resposta = client.models.generate_content(model="gemini-3.0-flash", contents=prompt)
                 
                 pdf_output = criar_pdf_buffer(resposta.text)
                 
