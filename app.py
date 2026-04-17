@@ -8,7 +8,11 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
-st.set_page_config(page_title="Analista IA - GEIP", page_icon="🏢", layout="centered")
+st.set_page_config(
+    page_title="Analista IA - GEIP", 
+    page_icon="https://fhemigmg.sharepoint.com/sites/GEIP/SiteAssets/Relar%C3%B3riosPBI/favicon%20GEIP-IA(1).png", 
+    layout="centered"
+)
 
 def criar_pdf_buffer(texto):
     buffer = io.BytesIO()
