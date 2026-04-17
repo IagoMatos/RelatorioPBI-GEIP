@@ -10,7 +10,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
     page_title="Analista IA - GEIP", 
-    page_icon="https://fhemigmg.sharepoint.com/sites/GEIP/SiteAssets/Relar%C3%B3riosPBI/favicon%20GEIP-IA(1).png", 
+    page_icon="https://fhemigmg.sharepoint.com/sites/GEIP/SiteAssets/Relar%C3%B3riosPBI/favicon-GEIP-IA_1_.ico", 
     layout="centered"
 )
 
