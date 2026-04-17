@@ -48,15 +48,14 @@ def criar_pdf_buffer(texto):
 st.title("📊 Gerador de Relatórios Estratégicos")
 st.markdown("""
     <style>
-    /* Muda o fundo da página */
+    
     .stApp {
-        background-color: #f5f7f9;
+        background-color: #ffffff;
     }
     
-    /* Estiliza os botões para o padrão FHEMIG */
     .stButton>button {
         border-radius: 20px;
-        background-color: #004a8d;
+        background-color: #018DA6;
         color: white;
         font-weight: bold;
         transition: 0.3s;
