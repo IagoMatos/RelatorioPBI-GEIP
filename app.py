@@ -48,6 +48,11 @@ def criar_pdf_buffer(texto):
 st.title("📊 Gerador de Relatórios Estratégicos")
 st.markdown("""
     <style>
+
+    
+    .stTitle {
+        color: #018DA6;
+    }
     
     .stApp {
         background-color: #ffffff;
