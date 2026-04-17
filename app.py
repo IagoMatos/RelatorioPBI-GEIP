@@ -174,6 +174,8 @@ if arquivo and api_key:
                 
                 # Matriz de Risco e Recomendações Estratégicas
                 [Com base nos desvios financeiros e de prazo encontrados, liste em formato de tópicos (bullet points) as ações corretivas imediatas recomendadas para a gerência.]
+
+                Garanta que caiba tudo estritamente em uma página somente.
                 
                 BASE DE DADOS PARA ANÁLISE:
                 {dados_csv}"""
