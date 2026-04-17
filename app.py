@@ -71,6 +71,7 @@ st.markdown("""
         max-width: 850px !important;
         margin-top: 50px !important;
         margin-bottom: 50px !important;
+        zoom: 1.2 !important;
     }
 
     /* Linha divisória do cabeçalho */
