@@ -90,21 +90,27 @@ st.markdown("""
         padding-bottom: 15px;
     }
 
-    /* Botões Padrão GEIP */
+/* Botões Padrão GEIP */
     div.stButton > button {
         background-color: #018DA6 !important;
         color: white !important;
         border: none !important;
-        font-weight: bold !important;
         padding: 15px !important;
         width: 100% !important;
         border-radius: 8px !important;
         transition: 0.3s;
-        font-family: 'Trebuchet MS', 'Segoe UI', sans-serif !important;
     }
     
     div.stButton > button:hover {
         background-color: #279eb3 !important;
+    }
+
+    /* O SEGREDO: Forçando a tipografia e o negrito diretamente no texto interno do botão */
+    div.stButton > button p {
+        font-family: 'Trebuchet MS', 'Segoe UI', sans-serif !important;
+        font-weight: 700 !important; /* 700 é o código exato para bold garantido */
+        font-size: 16px !important;
+        margin: 0 !important;
     }
 
     /* Cor do texto do seletor de arquivo */
