@@ -158,7 +158,7 @@ if arquivo and api_key:
 st.markdown("""
     <div style="text-align: center; margin-top: 40px;">
         <hr style="border: 0; border-top: 1px solid #ddd; margin-bottom: 20px;">
-        <p style="color: #666; font-style: italic ;font-size: 14px; font-weight: bold;">'Relatórios gerados por IA podem conter erros e não substiuem a análise Humana.'</p>
+        <p style="color: rgba(0,0,0,0.2); font-style: italic ;font-size: 14px; font-weight: bold;">'Relatórios gerados por IA podem conter erros e não substiuem a análise Humana.'</p>
         <a href="https://fhemigmg.sharepoint.com/sites/GEIP" target="_blank" 
            style="background-color: #018DA6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block; margin-top: 10px;">
            Acessar Portal GEIP
