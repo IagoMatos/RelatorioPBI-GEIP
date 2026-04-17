@@ -64,7 +64,7 @@ if arquivo and api_key:
                 client = genai.Client(api_key=api_key)
                 prompt = f"Atue como Analista Sênior. Gere um relatório longo e detalhado sem introduções. Dados: {dados_completos}"
                 
-                resposta = client.models.generate_content(model="gemini-3-flash-preview", contents=prompt)
+                resposta = client.models.generate_content(model="gemini-1.5-flash", contents=prompt)
                 pdf_output = criar_pdf_buffer(resposta.text)
                 
                 st.success("Relatório Concluído!")
@@ -75,4 +75,7 @@ if arquivo and api_key:
                     mime="application/pdf"
                 )
         except Exception as e:
-            st.error(f"Erro técnico: {e}")
+            if "429" in str(e):
+                st.error("⚠️ O limite de análises diárias foi atingido. Por favor, tente novamente em alguns instantes ou amanhã.")
+            else:
+                st.error(f"Ocorreu um erro inesperado: {e}")
