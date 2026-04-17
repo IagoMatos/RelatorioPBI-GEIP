@@ -88,7 +88,7 @@ st.markdown("""
     <div class="header-divider" style="display: flex; justify-content: space-between; align-items: center;">
         <div>
             <h2 style="margin:0; color: #018DA6; font-size: 26px;">SISTEMA DE ANÁLISE GEIP</h2>
-            <p style="margin:0; color: #666; font-size: 14px;">Gestão de Infraestrutura e Projetos - FHEMIG</p>
+            <p style="margin:0; color: #666; font-size: 14px;">Gerência de Infraestrutura Predial - FHEMIG</p>
         </div>
         <div style="background-color: #018DA6; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: bold;">IA CORPORATIVA</div>
     </div>
