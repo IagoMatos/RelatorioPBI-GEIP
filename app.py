@@ -44,7 +44,7 @@ st.markdown("""
     
     /* 1. Fundo Azul Escuro para toda a tela, incluindo a margem lateral */
     .stApp, [data-testid="stAppViewContainer"] {
-        background-color: #018DA6 !important;
+        background-color: #0c8398 !important;
         font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
     }
 
