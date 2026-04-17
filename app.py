@@ -24,7 +24,7 @@ def get_image_base64(caminho_imagem):
 # Tenta carregar a imagem. Se o ficheiro não existir, usa a "pílula" de texto como plano B
 try:
     logo_b64 = get_image_base64("logo_GeipIA.png")
-    img_html = f'<img src="data:image/png;base64,{logo_b64}" style="max-height: 45px; object-fit: contain;">'
+    img_html = f'<img src="data:image/png;base64,{logo_b64}" style="max-height: 90px; object-fit: contain;">'
 except Exception:
     img_html = '<div style="background-color: #018DA6; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: bold;">IA CORPORATIVA</div>'
 
