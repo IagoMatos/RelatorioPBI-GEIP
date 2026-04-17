@@ -46,7 +46,28 @@ def criar_pdf_buffer(texto):
 
 # Interface do Usuário
 st.title("📊 Gerador de Relatórios Estratégicos")
-st.markdown("---")
+st.markdown("""
+    <style>
+    /* Muda o fundo da página */
+    .stApp {
+        background-color: #f5f7f9;
+    }
+    
+    /* Estiliza os botões para o padrão FHEMIG */
+    .stButton>button {
+        border-radius: 20px;
+        background-color: #004a8d;
+        color: white;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    
+    .stButton>button:hover {
+        background-color: #003366;
+        border-color: #003366;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # Tenta pegar a chave automaticamente dos segredos do Streamlit
 # Se não achar, pede para o usuário (fallback)
