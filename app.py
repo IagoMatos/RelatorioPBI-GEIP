@@ -11,7 +11,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
     page_title="Analista IA - GEIP", 
-    page_icon="favicon.ico", 
+    page_icon="design/favicon.ico", 
     layout="centered"
 )
 
@@ -23,14 +23,14 @@ def get_image_base64(caminho_imagem):
 
 # 1. Carrega a Logo Principal
 try:
-    logo_b64 = get_image_base64("logo_GeipIA.png")
+    logo_b64 = get_image_base64("design/logo_GeipIA.png")
     img_html = f'<img src="data:image/png;base64,{logo_b64}" style="max-height: 90px; object-fit: contain;">'
 except Exception:
     img_html = '<div style="background-color: #018DA6; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: bold;">IA CORPORATIVA</div>'
 
 # 2. Carrega o Ícone de Gráfico (Substitui o Emoji)
 try:
-    grafico_b64 = get_image_base64("GraficoBarra.png")
+    grafico_b64 = get_image_base64("design/GraficoBarra.png")
     # A altura (height) foi ajustada para 24px para alinhar perfeitamente com o tamanho da fonte do título
     img_grafico_html = f'<img src="data:image/png;base64,{grafico_b64}" style="height: 32px; vertical-align: middle; margin-right: 8px;">'
 except Exception:
