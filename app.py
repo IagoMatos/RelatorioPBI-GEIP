@@ -152,7 +152,7 @@ if arquivo and api_key:
                 df = pd.read_excel(arquivo)
                 
                 # 2. Faz a limpeza preventiva do Pandas
-                df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+                df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
                 
                 # 3. Converte para texto apenas depois de limpo
                 dados_csv = df.to_csv(index=False)
