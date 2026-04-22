@@ -190,7 +190,7 @@ if arquivo and api_key:
                 BASE DE DADOS PARA ANÁLISE:
                 {dados_csv}"""
                 
-                # Usando o modelo estável
+                # Usando o modelo VÁLIDO E ESTÁVEL
                 resposta = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
                 
                 pdf_output = criar_pdf_buffer(resposta.text)
@@ -203,12 +203,14 @@ if arquivo and api_key:
                     mime="application/pdf"
                 )
         except Exception as e:
-            # Se der erro, mostramos o erro real no terminal/logs para sabermos o que é
+            # Se der erro, mostramos o erro real no terminal para sabermos o que é
             print(f"Erro detalhado: {e}") 
             if "429" in str(e):
                 st.error("⚠️ O limite de análises da sua chave foi atingido. Tente novamente mais tarde.")
             else:
-                st.error("⚠️ Ocorreu um erro ao processar os dados. Verifique a sua chave de API ou a formatação da folha de cálculo.")
+                # Agora o erro na tela vai te mostrar O QUE realmente falhou!
+                st.error(f"⚠️ Ocorreu um erro: {e}")
+
 # --- RODAPÉ ---
 st.markdown("""
     <div style="text-align: center; margin-top: 40px;">
