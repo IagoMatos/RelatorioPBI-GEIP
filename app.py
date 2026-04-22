@@ -191,7 +191,7 @@ if arquivo and api_key:
                 {dados_csv}"""
                 
                 # Usando o modelo VÁLIDO E ESTÁVEL
-                resposta = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+                resposta = client.models.generate_content(model="gemini-3.0", contents=prompt)
                 
                 pdf_output = criar_pdf_buffer(resposta.text)
                 
