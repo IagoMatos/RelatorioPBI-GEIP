@@ -145,24 +145,24 @@ api_key = st.text_input("🔑 Insira a Nova Chave API aqui:", type="password")
 arquivo = st.file_uploader("", type="xlsx", label_visibility="collapsed")
 
 if arquivo and api_key:
-    if st.button(" INICIAR ANÁLISE DE DADOS"):
+    if st.button("🚀 INICIAR ANÁLISE DE DADOS"):
         try:
-            with st.spinner("A IA está analisando o dashboard..."):
+            with st.spinner("Limpando e analisando os dados..."):
+                # 1. Lê o arquivo UMA ÚNICA VEZ
                 df = pd.read_excel(arquivo)
-                dados_csv = df.to_csv(index=False)
-
-                with st.spinner("Limpando e analisando os dados..."):
-                    df = pd.read_excel(arquivo)
-                    
-                    # --- TRATAMENTO PREVENTIVO PARA O POWER BI ---
-                    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
-                    dados_csv = df.to_csv(index=False)
                 
+                # 2. Faz a limpeza preventiva do Pandas
+                df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+                
+                # 3. Converte para texto apenas depois de limpo
+                dados_csv = df.to_csv(index=False)
+                
+                # 4. Envia para a IA
                 client = genai.Client(api_key=api_key)
                 prompt = f"""Atue como um Consultor Estratégico e Analista Sênior da GEIP (Gerência de Infraestrutura Predial da FHEMIG). 
                 Sua missão é processar a base de dados fornecida e redigir um Relatório Executivo Gerencial focado inteiramente na tomada de decisão técnica e financeira.
 
-                GARANTA QUE A ANÁLISE CAIBA EM EXATAMENTE UMA FOLHA DO PDF E QUE FIQUE SOBRANDO EXATAMENTE DUAS LINHAS.
+                Seja extremamente conciso e direto. Limite seu relatório a um máximo de 350 palavras para garantir uma leitura executiva rápida.
                 
                 DIRETRIZES DE ESTILO E TOM:
                 1. Tom estritamente formal, impessoal, analítico e técnico.
@@ -184,12 +184,14 @@ if arquivo and api_key:
                 # Matriz de Risco e Recomendações Estratégicas
                 [Com base nos desvios financeiros e de prazo encontrados, liste em formato de tópicos (bullet points) as ações corretivas imediatas recomendadas para a gerência.]
 
+                # Auditoria de Dados
                 [Analise a integridade da base fornecida. Identifique e liste rigorosamente inconsistências que possam corromper a leitura de dados em sistemas de BI, tais como: valores numéricos formatados como texto, datas inválidas ou em formatos discrepantes, campos em branco em colunas críticas, e valores absurdos (outliers irreais). Indique exatamente onde o erro parece estar.]
                 
                 BASE DE DADOS PARA ANÁLISE:
                 {dados_csv}"""
                 
-                resposta = client.models.generate_content(model="gemini-3-flash-preview", contents=prompt)
+                # Usando o modelo estável
+                resposta = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
                 
                 pdf_output = criar_pdf_buffer(resposta.text)
                 
@@ -201,11 +203,12 @@ if arquivo and api_key:
                     mime="application/pdf"
                 )
         except Exception as e:
+            # Se der erro, mostramos o erro real no terminal/logs para sabermos o que é
+            print(f"Erro detalhado: {e}") 
             if "429" in str(e):
                 st.error("⚠️ O limite de análises da sua chave foi atingido. Tente novamente mais tarde.")
             else:
                 st.error("⚠️ Ocorreu um erro ao processar os dados. Verifique a sua chave de API ou a formatação da folha de cálculo.")
-
 # --- RODAPÉ ---
 st.markdown("""
     <div style="text-align: center; margin-top: 40px;">
