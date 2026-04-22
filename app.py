@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import re
 import io
-import base64 # <-- NOVA BIBLIOTECA ADICIONADA AQUI
+import base64
 from google import genai
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable
@@ -21,20 +21,20 @@ def get_image_base64(caminho_imagem):
     with open(caminho_imagem, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-# 1. Carrega a Logo Principal
+# Logo Principal
 try:
     logo_b64 = get_image_base64("design/logo_GeipIA.png")
     img_html = f'<img src="data:image/png;base64,{logo_b64}" style="max-height: 90px; object-fit: contain;">'
 except Exception:
     img_html = '<div style="background-color: #018DA6; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: bold;">IA CORPORATIVA</div>'
 
-# 2. Carrega o Ícone de Gráfico (Substitui o Emoji)
+# Ícone de Gráfico
 try:
     grafico_b64 = get_image_base64("design/GraficoBarra.png")
     # A altura (height) foi ajustada para 24px para alinhar perfeitamente com o tamanho da fonte do título
     img_grafico_html = f'<img src="data:image/png;base64,{grafico_b64}" style="height: 32px; vertical-align: middle; margin-right: 8px;">'
 except Exception:
-    img_grafico_html = '📊' # Se o arquivo não for encontrado, ele volta para o emoji como plano B
+    img_grafico_html = '📊' # Se o arquivo não for encontrado, ele volta para o emoji 
 
 
 def criar_pdf_buffer(texto):
@@ -154,6 +154,8 @@ if arquivo and api_key:
                 client = genai.Client(api_key=api_key)
                 prompt = f"""Atue como um Consultor Estratégico e Analista Sênior da GEIP (Gerência de Infraestrutura Predial da FHEMIG). 
                 Sua missão é processar a base de dados fornecida e redigir um Relatório Executivo Gerencial focado inteiramente na tomada de decisão técnica e financeira.
+
+                GARANTA QUE A ANÁLISE CAIBA EM EXATAMENTE UMA FOLHA DO PDF E QUE FIQUE SOBRANDO EXATAMENTE UMA LINHA.
                 
                 DIRETRIZES DE ESTILO E TOM:
                 1. Tom estritamente formal, impessoal, analítico e técnico.
@@ -175,7 +177,7 @@ if arquivo and api_key:
                 # Matriz de Risco e Recomendações Estratégicas
                 [Com base nos desvios financeiros e de prazo encontrados, liste em formato de tópicos (bullet points) as ações corretivas imediatas recomendadas para a gerência.]
 
-                Garanta que caiba tudo estritamente em uma página somente.
+                
                 
                 BASE DE DADOS PARA ANÁLISE:
                 {dados_csv}"""
