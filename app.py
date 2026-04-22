@@ -155,7 +155,7 @@ if arquivo and api_key:
                     df = pd.read_excel(arquivo)
                     
                     # --- TRATAMENTO PREVENTIVO PARA O POWER BI ---
-                    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else 
+                    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
                     dados_csv = df.to_csv(index=False)
                 
                 client = genai.Client(api_key=api_key)
