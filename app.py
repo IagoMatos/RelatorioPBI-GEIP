@@ -200,7 +200,7 @@ if arquivo and api_key:
                     BASE DE DADOS:
                     {dados_csv}"""
                     
-                    resposta = client.models.generate_content(model="gemini-3.0-flash", contents=prompt_executivo)
+                    resposta = client.models.generate_content(model="gemini-2.5-flash-lite", contents=prompt_executivo)
                     
                     # Gera PDF com Título Específico
                     pdf_output = criar_pdf_buffer(resposta.text, titulo_documento="GEIP - Relatório Executivo Gerencial")
