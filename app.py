@@ -139,14 +139,15 @@ def processar_planilha(file):
 if arquivo and api_key:
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Criamos duas colunas na tela para organizar os botões lado a lado
-    col1, col2 = st.columns(2)
+    # Adicionamos um 'gap' para afastar os botões de forma simétrica
+    col1, col2 = st.columns(2, gap="medium")
     
     # ==========================================
     # BOTÃO 1: RELATÓRIO EXECUTIVO DE NEGÓCIOS
     # ==========================================
     with col1:
-        if st.button("📊 RELATÓRIO EXECUTIVO"):
+        # Forçamos o botão a usar 100% do container
+        if st.button("📊 RELATÓRIO EXECUTIVO", use_container_width=True):
             try:
                 with st.spinner("Analisando o cenário de negócios..."):
                     dados_csv = processar_planilha(arquivo)
@@ -187,7 +188,8 @@ if arquivo and api_key:
     # BOTÃO 2: AUDITORIA DE INTEGRIDADE DE DADOS
     # ==========================================
     with col2:
-        if st.button("🔍 AUDITORIA DE DADOS"):
+        # Forçamos o botão a usar 100% do container
+        if st.button("🔍 AUDITORIA DE DADOS", use_container_width=True):
             try:
                 with st.spinner("Auditando as células e formatações..."):
                     dados_csv = processar_planilha(arquivo)
