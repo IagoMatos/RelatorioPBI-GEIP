@@ -191,20 +191,22 @@ if arquivo and api_key and aba_selecionada:
                     prompt = f"""Atue como Engenheiro de Dados Sênior da GEIP. 
                     Sua missão é realizar uma varredura técnica rigorosa na base de dados, com foco EXCLUSIVO em garantir a importação perfeita no Power BI.
                     
-                    REGRAS DE CLASSIFICAÇÃO DE ERROS (MUITO IMPORTANTE):
-                    Você deve obrigatoriamente separar o que é um "Erro Fatal" de uma "Sugestão de Melhoria".
-                    1. ERROS CRÍTICOS (Bloqueantes): Tudo que trava a tipagem do Power BI. Ex: valores numéricos com pontuação dupla, letras misturadas em colunas financeiras ou de datas, e formatos de data inválidos.
-                    2. AVISOS (Não bloqueantes): Células vazias/nulas, nomenclaturas inconsistentes em colunas de texto, ou espaços em branco desnecessários.
+                    REGRAS DE CLASSIFICAÇÃO DE ERROS E ALERTAS:
+                    1. 🚨 ERROS CRÍTICOS (Bloqueantes - Liste 1 a 1): Tudo que trava a tipagem do Power BI. Ex: valores numéricos com pontuação dupla, letras misturadas em colunas financeiras ou de datas, e formatos de data inválidos. Identifique a 'Linha_Excel' exata.
                     
-                    A primeira coluna chama-se 'Linha_Excel'. Use-a SEMPRE para indicar a localização exata do problema.
-                    É EXPRESSAMENTE PROIBIDO o uso de formato JSON, chaves ou aspas de código. Use tópicos simples.
+                    2. ⚠️ AVISOS E SUGESTÕES (Não bloqueantes - AGRUPE OS DADOS): 
+                       - É EXPRESSAMENTE PROIBIDO listar células vazias linha por linha se elas não forem um erro bloqueante.
+                       - Identifique o padrão e agrupe a informação (Ex: "A coluna 'X' possui 45 células vazias, principalmente a partir da linha 200").
+                       - INTELIGÊNCIA DE CONTEXTO: Ignore células vazias em linhas que parecem ser "Cabeçalhos de Seção", linhas de "Total/Subtotal", ou colunas que são obviamente opcionais (ex: "Justificativa" ou linhas marcadas como 'NÃO POSSUI').
+                    
+                    É EXPRESSAMENTE PROIBIDO o uso de formato JSON, chaves ou aspas de código. Use tópicos limpos e seja muito conciso.
 
                     ESTRUTURA OBRIGATÓRIA (Use '#' para títulos):
                     # Resumo da Qualidade de Dados
                     # 🚨 ERROS CRÍTICOS (Ação Imediata Obrigatória)
-                    [Liste aqui os erros que travam a importação. Formato: "Linha X, Coluna Y: Problema encontrado"]
-                    # ⚠️ AVISOS E SUGESTÕES (Melhorias de Formatação)
-                    [Liste aqui os problemas menores e células vazias]
+                    [Liste individualmente apenas os erros graves, com a respectiva Linha_Excel]
+                    # ⚠️ PADRÕES E SUGESTÕES (Resumo Agrupado)
+                    [Resuma os problemas menores e os padrões de células vazias não-intencionais em no MÁXIMO 5 tópicos]
 
                     BASE DE DADOS:
                     {dados_csv}"""
