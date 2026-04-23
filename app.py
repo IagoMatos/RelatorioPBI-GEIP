@@ -123,8 +123,15 @@ cabecalho_html = f"""
 """
 st.markdown(cabecalho_html, unsafe_allow_html=True)
 
-api_key = st.text_input("🔑 Insira a Nova Chave API aqui:", type="password").strip()
+# Removemos a caixa de senha. O usuário vê apenas o botão de upload.
 arquivo = st.file_uploader("Faça o upload do Excel exportado para iniciar a redação técnica.", type="xlsx")
+
+# O sistema busca a chave silenciosamente no cofre do Streamlit
+try:
+    api_key = st.secrets["GEMINI_API_KEY"]
+except KeyError:
+    st.error("⚠️ O sistema está em manutenção. A chave da API não foi encontrada no cofre.")
+    api_key = None
 
 # --- FUNÇÃO AUXILIAR DE LIMPEZA ---
 # Criamos esta função para não repetir código nos dois botões
