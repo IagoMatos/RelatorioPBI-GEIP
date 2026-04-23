@@ -192,9 +192,10 @@ if arquivo and api_key and aba_selecionada:
                     Sua missão é realizar uma varredura técnica rigorosa na base de dados, com foco EXCLUSIVO em garantir a importação perfeita no Power BI.
                     
                     REGRAS DE CLASSIFICAÇÃO E AGRUPAMENTO DE ERROS:
-                    1. 🚨 ERROS CRÍTICOS (Bloqueantes): Problemas que travam a tipagem (ex: valores com dupla pontuação, letras em campos numéricos, datas inválidas). 
-                       - REGRA VITAL DE AGRUPAMENTO: Se um MESMO erro ocorrer repetidamente numa mesma coluna (ex: dezenas de linhas com valores fracionados na coluna 'Dias'), É EXPRESSAMENTE PROIBIDO listar linha por linha. Agrupe em uma única frase apontando o problema sistêmico e cite apenas 3 exemplos de linhas. Ex: "A coluna 'X' possui erro sistêmico de formatação em Y linhas (ex: linhas 15, 16, 17...)".
+                    1. 🚨 ERROS CRÍTICOS (Bloqueantes): Problemas que travam a tipagem (ex: valores com dupla pontuação ou letras em campos numéricos). 
+                       - REGRA VITAL DE AGRUPAMENTO: Se um MESMO erro ocorrer repetidamente numa mesma coluna, agrupe em uma única frase. Ex: "A coluna 'X' possui erro sistêmico de formatação fracionada em Y linhas (ex: linhas 15, 16, 17...)".
                        - Liste 1 a 1 APENAS os erros isolados (anomalias únicas de digitação).
+                       - 🛡️ BLINDAGEM CONTRA FALSOS POSITIVOS (DATAS): Formatos de data que incluem horas, como 'DD/MM/YYYY 00:00:00', são 100% VÁLIDOS no Power BI. NÃO OS REPORTE COMO ERRO. Células vazias nessas colunas de data também NÃO são erros críticos.
                     
                     2. ⚠️ AVISOS E SUGESTÕES (Não bloqueantes): 
                        - É EXPRESSAMENTE PROIBIDO listar células vazias linha por linha.
