@@ -141,11 +141,29 @@ cabecalho_html = f"""
 st.markdown(cabecalho_html, unsafe_allow_html=True)
 
 # --- WIDGETS NATIVOS ---
-api_key = st.text_input("🔑 Insira a Nova Chave API aqui:", type="password")
+# Adicionamos o .strip() aqui para blindar contra espaços acidentais!
+api_key = st.text_input("🔑 Insira a Nova Chave API aqui:", type="password").strip()
 arquivo = st.file_uploader("", type="xlsx", label_visibility="collapsed")
+
+# --- INÍCIO DO BOTÃO TEMPORÁRIO DE TESTE ---
+if api_key:
+    if st.button("🔍 TESTE DE CONEXÃO: Listar Modelos"):
+        try:
+            client = genai.Client(api_key=api_key)
+            # Busca e guarda todos os nomes de modelos permitidos
+            modelos = [model.name for model in client.models.list()]
+            
+            st.success("✅ Chave válida! Veja os modelos liberados para você abaixo:")
+            st.write(modelos) # Imprime a lista direto na tela branca do app
+            
+        except Exception as e:
+            st.error(f"❌ Erro ao validar a chave: {e}")
+# --- FIM DO BOTÃO TEMPORÁRIO DE TESTE ---
+
 
 if arquivo and api_key:
     if st.button("🚀 INICIAR ANÁLISE DE DADOS"):
+        # ... (O resto do seu código continua exatamente igual daqui para baixo) ...
         try:
             with st.spinner("Limpando e analisando os dados..."):
                 # 1. Lê o arquivo UMA ÚNICA VEZ
