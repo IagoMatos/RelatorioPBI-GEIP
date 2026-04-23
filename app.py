@@ -188,12 +188,26 @@ if arquivo and api_key and aba_selecionada:
                     dados_csv = processar_planilha(arquivo, aba_selecionada)
                     client = genai.Client(api_key=api_key)
                     
-                    prompt = f"""Atue como Engenheiro de Dados da GEIP. Varredura técnica para Power BI.
-                    Localize erros usando a coluna 'Linha_Excel'.
+                    prompt = f"""Atue como Engenheiro de Dados Sênior da GEIP. 
+                    Sua missão é realizar uma varredura técnica rigorosa na base de dados, com foco EXCLUSIVO em garantir a importação perfeita no Power BI.
+                    
+                    REGRAS DE CLASSIFICAÇÃO DE ERROS (MUITO IMPORTANTE):
+                    Você deve obrigatoriamente separar o que é um "Erro Fatal" de uma "Sugestão de Melhoria".
+                    1. ERROS CRÍTICOS (Bloqueantes): Tudo que trava a tipagem do Power BI. Ex: valores numéricos com pontuação dupla (como '3,053862,02'), letras misturadas em colunas financeiras ou de datas, e formatos de data inválidos.
+                    2. AVISOS (Não bloqueantes): Células vazias/nulas, nomenclaturas inconsistentes em colunas de texto, ou espaços em branco desnecessários.
+                    
+                    A primeira coluna chama-se 'Linha_Excel'. Use-a SEMPRE para indicar a localização exata do problema.
+                    É EXPRESSAMENTE PROIBIDO o uso de formato JSON, chaves ou aspas de código. Use tópicos simples.
+
+                    ESTRUTURA OBRIGATÓRIA (Use '#' para títulos):
                     # Resumo da Qualidade de Dados
-                    # Inconsistências Técnicas Encontradas
-                    # Recomendações de Formatação
-                    BASE: {dados_csv}"""
+                    # 🚨 ERROS CRÍTICOS (Ação Imediata Obrigatória)
+                    [Liste aqui os erros que travam a importação. Formato: "Linha X, Coluna Y: Problema encontrado"]
+                    # ⚠️ AVISOS E SUGESTÕES (Melhorias de Formatação)
+                    [Liste aqui os problemas menores e células vazias]
+
+                    BASE DE DADOS:
+                    {dados_csv}"""
                     
                     resposta = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
                     pdf = criar_pdf_buffer(resposta.text, "GEIP - Auditoria de Integridade de Dados")
