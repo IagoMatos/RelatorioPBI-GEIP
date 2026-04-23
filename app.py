@@ -193,7 +193,7 @@ if arquivo and api_key and aba_selecionada:
                     
                     REGRAS DE CLASSIFICAÇÃO DE ERROS (MUITO IMPORTANTE):
                     Você deve obrigatoriamente separar o que é um "Erro Fatal" de uma "Sugestão de Melhoria".
-                    1. ERROS CRÍTICOS (Bloqueantes): Tudo que trava a tipagem do Power BI. Ex: valores numéricos com pontuação dupla (como '3,053862,02'), letras misturadas em colunas financeiras ou de datas, e formatos de data inválidos.
+                    1. ERROS CRÍTICOS (Bloqueantes): Tudo que trava a tipagem do Power BI. Ex: valores numéricos com pontuação dupla, letras misturadas em colunas financeiras ou de datas, e formatos de data inválidos.
                     2. AVISOS (Não bloqueantes): Células vazias/nulas, nomenclaturas inconsistentes em colunas de texto, ou espaços em branco desnecessários.
                     
                     A primeira coluna chama-se 'Linha_Excel'. Use-a SEMPRE para indicar a localização exata do problema.
