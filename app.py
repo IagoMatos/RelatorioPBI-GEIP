@@ -191,22 +191,24 @@ if arquivo and api_key and aba_selecionada:
                     prompt = f"""Atue como Engenheiro de Dados Sênior da GEIP. 
                     Sua missão é realizar uma varredura técnica rigorosa na base de dados, com foco EXCLUSIVO em garantir a importação perfeita no Power BI.
                     
-                    REGRAS DE CLASSIFICAÇÃO DE ERROS E ALERTAS:
-                    1. 🚨 ERROS CRÍTICOS (Bloqueantes - Liste 1 a 1): Tudo que trava a tipagem do Power BI. Ex: valores numéricos com pontuação dupla, letras misturadas em colunas financeiras ou de datas, e formatos de data inválidos. Identifique a 'Linha_Excel' exata.
+                    REGRAS DE CLASSIFICAÇÃO E AGRUPAMENTO DE ERROS:
+                    1. 🚨 ERROS CRÍTICOS (Bloqueantes): Problemas que travam a tipagem (ex: valores com dupla pontuação, letras em campos numéricos, datas inválidas). 
+                       - REGRA VITAL DE AGRUPAMENTO: Se um MESMO erro ocorrer repetidamente numa mesma coluna (ex: dezenas de linhas com valores fracionados na coluna 'Dias'), É EXPRESSAMENTE PROIBIDO listar linha por linha. Agrupe em uma única frase apontando o problema sistêmico e cite apenas 3 exemplos de linhas. Ex: "A coluna 'X' possui erro sistêmico de formatação em Y linhas (ex: linhas 15, 16, 17...)".
+                       - Liste 1 a 1 APENAS os erros isolados (anomalias únicas de digitação).
                     
-                    2. ⚠️ AVISOS E SUGESTÕES (Não bloqueantes - AGRUPE OS DADOS): 
-                       - É EXPRESSAMENTE PROIBIDO listar células vazias linha por linha se elas não forem um erro bloqueante.
+                    2. ⚠️ AVISOS E SUGESTÕES (Não bloqueantes): 
+                       - É EXPRESSAMENTE PROIBIDO listar células vazias linha por linha.
                        - Identifique o padrão e agrupe a informação (Ex: "A coluna 'X' possui 45 células vazias, principalmente a partir da linha 200").
-                       - INTELIGÊNCIA DE CONTEXTO: Ignore células vazias em linhas que parecem ser "Cabeçalhos de Seção", linhas de "Total/Subtotal", ou colunas que são obviamente opcionais (ex: "Justificativa" ou linhas marcadas como 'NÃO POSSUI').
+                       - INTELIGÊNCIA DE CONTEXTO: Ignore células vazias em "Cabeçalhos de Seção", linhas de "Total/Subtotal" ou "NÃO POSSUI".
                     
-                    É EXPRESSAMENTE PROIBIDO o uso de formato JSON, chaves ou aspas de código. Use tópicos limpos e seja muito conciso.
+                    É EXPRESSAMENTE PROIBIDO o uso de formato JSON, chaves ou aspas de código. Use tópicos limpos.
 
                     ESTRUTURA OBRIGATÓRIA (Use '#' para títulos):
                     # Resumo da Qualidade de Dados
                     # 🚨 ERROS CRÍTICOS (Ação Imediata Obrigatória)
-                    [Liste individualmente apenas os erros graves, com a respectiva Linha_Excel]
+                    [Agrupe os erros repetitivos/sistêmicos. Liste individualmente apenas erros de digitação isolados. Indique sempre a Linha_Excel]
                     # ⚠️ PADRÕES E SUGESTÕES (Resumo Agrupado)
-                    [Resuma os problemas menores e os padrões de células vazias não-intencionais em no MÁXIMO 5 tópicos]
+                    [Resuma em no MÁXIMO 5 tópicos]
 
                     BASE DE DADOS:
                     {dados_csv}"""
