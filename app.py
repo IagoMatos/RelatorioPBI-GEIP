@@ -175,46 +175,34 @@ if arquivo and api_key:
                 # 3. Converte para texto apenas depois de limpo
                 dados_csv = df.to_csv(index=True)
                 
-                # 4. Envia para a IA
+               # 4. Envia para a IA com Prompt Refinado
                 client = genai.Client(api_key=api_key)
-                prompt = f"""Atue como um Consultor Estratégico e Analista Sênior da GEIP (Gerência de Infraestrutura Predial da FHEMIG). 
-                Sua missão é processar a base de dados fornecida e redigir um Relatório Executivo Gerencial focado inteiramente na tomada de decisão técnica e financeira.
+                prompt = f"""Atue como um Consultor Estratégico e Analista Sênior da GEIP. 
+                Sua missão é realizar uma auditoria técnica na base de dados anexa para garantir a compatibilidade com o Power BI.
 
-                Seja extremamente conciso e direto. Limite seu relatório a um máximo de 350 palavras para garantir uma leitura executiva rápida.
-                
-                DIRETRIZES DE ESTILO E TOM:
-                1. Tom estritamente formal, impessoal, analítico e técnico.
-                2. Seja objetivo. É terminantemente proibido redigir introduções genéricas, saudações, conclusões supérfluas ou jargões corporativos vazios. 
-                3. Baseie todas as afirmações exclusivamente nos dados fornecidos.
-                
-                ESTRUTURA OBRIGATÓRIA DO RELATÓRIO:
-                (Você deve utilizar exatamente esta estrutura, usando um único símbolo '#' para os títulos das seções)
-                
+                REGRAS DE CONTAGEM DE LINHAS:
+                - A primeira coluna dos dados fornecidos é o 'ID de Processamento' (Index).
+                - IMPORTANTE: Para localizar o erro no Excel original, some 2 ao número do ID de Processamento. 
+                (Exemplo: Se o ID for 49, o erro está na Linha 51 do Excel).
+
+                DIRETRIZES DE AUDITORIA:
+                1. Analise apenas os dados reais. Não invente erros se a base estiver correta.
+                2. Se encontrar inconsistências (pontos onde deveriam ser vírgulas, textos em campos de valor, ou datas inválidas), reporte-as.
+                3. Se a base de dados estiver 100% correta, escreva apenas: "Nenhuma inconsistência técnica detectada na base de dados."
+
+                ESTRUTURA DO RELATÓRIO DE ERROS (Apenas se houver erros):
+                - Localização Exata: (Linha do Excel e Nome da Coluna)
+                - Natureza do Problema: (Descrição técnica do desvio)
+                - Sugestão de Correção: (Como formatar para o Power BI aceitar)
+
+                ESTRUTURA DO RELATÓRIO EXECUTIVO:
+                (Utilize '#' para os títulos das seções)
                 # Visão Geral do Portfólio
-                [Apresente um sumário executivo conciso sobre o volume total de projetos/obras, status geral e montante financeiro global envolvido.]
-                
                 # Desempenho Financeiro e Execução
-                [Analise a relação entre os valores contratados e liquidados/medidos. Identifique discrepâncias financeiras, projetos com alta ociosidade de recurso ou gargalos orçamentários.]
-                
                 # Análise de Cronograma e Prazos
-                [Mapeie rigorosamente o cumprimento de prazos. Destaque projetos atrasados, em risco de estouro de cronograma ou paralisados, justificando com base nos dados.]
-                
                 # Matriz de Risco e Recomendações Estratégicas
-                [Com base nos desvios financeiros e de prazo encontrados, liste em formato de tópicos (bullet points) as ações corretivas imediatas recomendadas para a gerência.]
-
                 # Auditoria de Integridade de Dados
-                [Analise rigorosamente a base fornecida. Os dados possuem uma coluna de 'Index' (numeração da linha). 
-                Sua tarefa é identificar inconsistências que impeçam o processamento no Power BI.
-                Para cada erro encontrado, você deve obrigatoriamente reportar no seguinte formato:
-                - Localização: (Ex: Linha X, Coluna Y)
-                - Descrição do Erro: (Ex: Valor numérico contém caracteres inválidos ou formato de data incorreto)
-                - Impacto: (Ex: Causará erro de conversão de tipo no Power BI)
-                
-                Foque especialmente em:
-                1. Números formatados com '.' (ponto) em campos que deveriam ser moeda/decimal.
-                2. Células vazias em colunas obrigatórias.
-                3. Datas fora do padrão institucional.]
-                               
+
                 BASE DE DADOS PARA ANÁLISE:
                 {dados_csv}"""
                 
