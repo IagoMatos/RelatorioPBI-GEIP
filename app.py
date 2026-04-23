@@ -37,7 +37,8 @@ if grafico_b64:
 else:
     img_grafico_html = '📊'
 
-def criar_pdf_buffer(texto):
+# --- FUNÇÃO DO PDF (AGORA ACEITA TÍTULOS DINÂMICOS) ---
+def criar_pdf_buffer(texto, titulo_documento="GEIP - Relatório Executivo Gerencial"):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4)
     styles = getSampleStyleSheet()
@@ -45,9 +46,9 @@ def criar_pdf_buffer(texto):
     if 'Disclaimer' not in styles:
         styles.add(ParagraphStyle(name='Disclaimer', parent=styles['Normal'], fontSize=8, textColor='gray', alignment=1, fontName='Helvetica-Oblique'))
     
-    story = [Paragraph("<b>GEIP - Relatório Executivo Gerencial</b>", styles["Heading1"]), Spacer(1, 20)]
+    # O título agora muda dependendo do botão clicado
+    story = [Paragraph(f"<b>{titulo_documento}</b>", styles["Heading1"]), Spacer(1, 20)]
     
-    # LIMPEZA MAGISTRAL: Remove resquícios de JSON ou chaves antes de desenhar o PDF
     texto_limpo = texto.replace('{', '').replace('}', '').replace('"', '').replace('json', '').replace('relatorio_executivo:', '')
     texto_tratado = re.sub(r'\*\*(.*?)\*\*', r'<b>\1</b>', texto_limpo)
     
@@ -109,7 +110,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- INTERFACE ---
+# --- INTERFACE PRINCIPAL ---
 cabecalho_html = f"""
 <div class="header-divider" style="display: flex; justify-content: space-between; align-items: center;">
     <div>
@@ -125,49 +126,105 @@ st.markdown(cabecalho_html, unsafe_allow_html=True)
 api_key = st.text_input("🔑 Insira a Nova Chave API aqui:", type="password").strip()
 arquivo = st.file_uploader("Faça o upload do Excel exportado para iniciar a redação técnica.", type="xlsx")
 
+# --- FUNÇÃO AUXILIAR DE LIMPEZA ---
+# Criamos esta função para não repetir código nos dois botões
+def processar_planilha(file):
+    df = pd.read_excel(file)
+    df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
+    df.index = df.index + 2 
+    df.index.name = 'Linha_Excel'
+    return df.to_csv(index=True)
+
+
 if arquivo and api_key:
-    if st.button("🚀 INICIAR ANÁLISE DE DADOS"):
-        try:
-            with st.spinner("Limpando e analisando os dados..."):
-                df = pd.read_excel(arquivo)
-                df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
-                
-                # Cálculo Universal da Linha do Excel
-                df.index = df.index + 2 
-                df.index.name = 'Linha_Excel'
-                dados_csv = df.to_csv(index=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Criamos duas colunas na tela para organizar os botões lado a lado
+    col1, col2 = st.columns(2)
+    
+    # ==========================================
+    # BOTÃO 1: RELATÓRIO EXECUTIVO DE NEGÓCIOS
+    # ==========================================
+    with col1:
+        if st.button("📊 RELATÓRIO EXECUTIVO"):
+            try:
+                with st.spinner("Analisando o cenário de negócios..."):
+                    dados_csv = processar_planilha(arquivo)
+                    client = genai.Client(api_key=api_key)
+                    
+                    prompt_executivo = f"""Atue como um Consultor Estratégico e Analista Sênior da GEIP. 
+                    Sua missão é deduzir o contexto de negócio da base e gerar um relatório executivo padronizado.
+                    
+                    DIRETRIZES:
+                    1. Foco exclusivo em métricas, desempenho, finanças, prazos e visão geral de portfólio.
+                    2. IGNORE qualquer erro de formatação de dados, células vazias ou tipos de dados errados. Isso não é uma auditoria técnica.
+                    3. É EXPRESSAMENTE PROIBIDO o uso de formato JSON ou chaves. Use texto humano.
 
-                client = genai.Client(api_key=api_key)
-                prompt = f"""Atue como um Consultor Estratégico e Analista Sênior da GEIP. 
-                Sua missão é ler a base de dados anexa, deduzir o seu contexto de negócio e gerar um relatório executivo padronizado.
+                    ESTRUTURA OBRIGATÓRIA (Use '#' para títulos):
+                    # Visão Geral do Portfólio
+                    # Desempenho e Métricas Principais
+                    # Matriz de Risco e Alertas Estratégicos
 
-                DIRETRIZES GERAIS DE AUDITORIA DE DADOS:
-                1. Procure por quebras de padrão lógicas em qualquer coluna: textos em campos numéricos, datas corrompidas ou células vazias.
-                2. A primeira coluna chama-se 'Linha_Excel'. Use-a para indicar a localização exata de falhas.
-                3. É EXPRESSAMENTE PROIBIDO o uso de formato JSON, chaves ({{ }}) ou aspas de código. Use apenas texto humano e tópicos.
-                4. Analise apenas dados reais. Se a base estiver correta, declare-a íntegra.
+                    BASE DE DADOS:
+                    {dados_csv}"""
+                    
+                    resposta = client.models.generate_content(model="gemini-2.5-flash-lite", contents=prompt_executivo)
+                    
+                    # Gera PDF com Título Específico
+                    pdf_output = criar_pdf_buffer(resposta.text, titulo_documento="GEIP - Relatório Executivo Gerencial")
+                    
+                    st.success("Relatório gerado com sucesso!")
+                    st.download_button(
+                        label="📥 BAIXAR RELATÓRIO EXECUTIVO",
+                        data=pdf_output,
+                        file_name="Relatorio_Executivo_GEIP.pdf",
+                        mime="application/pdf"
+                    )
+            except Exception as e:
+                st.error(f"⚠️ Erro ao processar relatório: {e}")
 
-                ESTRUTURA OBRIGATÓRIA (Use '#' para títulos):
-                # Visão Geral do Portfólio
-                # Desempenho e Métricas Principais
-                # Matriz de Risco e Alertas Estratégicos
-                # Auditoria de Integridade de Dados
+    # ==========================================
+    # BOTÃO 2: AUDITORIA DE INTEGRIDADE DE DADOS
+    # ==========================================
+    with col2:
+        if st.button("🔍 AUDITORIA DE DADOS"):
+            try:
+                with st.spinner("Auditando as células e formatações..."):
+                    dados_csv = processar_planilha(arquivo)
+                    client = genai.Client(api_key=api_key)
+                    
+                    prompt_auditoria = f"""Atue como um Engenheiro de Dados Sênior da GEIP. 
+                    Sua missão é realizar uma varredura estritamente técnica na base de dados para garantir a compatibilidade com o sistema Power BI.
+                    
+                    DIRETRIZES:
+                    1. Foco exclusivo em quebras de padrão lógicas: textos em campos numéricos, datas corrompidas, outliers absurdos ou células vazias.
+                    2. IGNORE o contexto de negócios, montantes financeiros globais ou visão de portfólio.
+                    3. A primeira coluna chama-se 'Linha_Excel'. Use-a para indicar a localização exata de falhas.
+                    4. Se a base estiver perfeita, declare explicitamente: "Nenhuma inconsistência técnica detectada."
+                    5. É EXPRESSAMENTE PROIBIDO o uso de formato JSON.
 
-                BASE DE DADOS:
-                {dados_csv}"""
-                
-                resposta = client.models.generate_content(model="gemini-2.5-flash-lite", contents=prompt)
-                pdf_output = criar_pdf_buffer(resposta.text)
-                
-                st.success("Relatório concluído com sucesso!")
-                st.download_button(
-                    label="📥 BAIXAR RELATÓRIO OFICIAL (PDF)",
-                    data=pdf_output,
-                    file_name="Relatorio_Executivo_GEIP.pdf",
-                    mime="application/pdf"
-                )
-        except Exception as e:
-            st.error(f"⚠️ Ocorreu um erro: {e}")
+                    ESTRUTURA OBRIGATÓRIA (Use '#' para títulos):
+                    # Resumo da Qualidade de Dados
+                    # Inconsistências Técnicas Encontradas (Aponte Linha_Excel e o problema exato)
+                    # Recomendações de Formatação
+
+                    BASE DE DADOS:
+                    {dados_csv}"""
+                    
+                    resposta = client.models.generate_content(model="gemini-2.5-flash-lite", contents=prompt_auditoria)
+                    
+                    # Gera PDF com Título Específico para a Auditoria
+                    pdf_output = criar_pdf_buffer(resposta.text, titulo_documento="GEIP - Auditoria de Integridade de Dados")
+                    
+                    st.success("Auditoria concluída com sucesso!")
+                    st.download_button(
+                        label="📥 BAIXAR RELATÓRIO DE AUDITORIA",
+                        data=pdf_output,
+                        file_name="Auditoria_Dados_GEIP.pdf",
+                        mime="application/pdf"
+                    )
+            except Exception as e:
+                st.error(f"⚠️ Erro ao auditar dados: {e}")
 
 # --- RODAPÉ ---
 st.markdown("""
