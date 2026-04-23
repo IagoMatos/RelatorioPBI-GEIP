@@ -181,7 +181,6 @@ if arquivo and api_key:
                     dados_csv = df.to_csv(index=True)
                 
                # 4. Envia para a IA com Prompt Refinado
-                client = genai.Client(api_key=api_key)
                 prompt = f"""Atue como um Consultor Estratégico e Analista Sênior da GEIP. 
                 Sua missão é ler a base de dados anexa, deduzir o seu contexto de negócio e gerar um relatório executivo padronizado.
 
